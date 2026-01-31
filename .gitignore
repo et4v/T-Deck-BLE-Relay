@@ -1,5 +1,9 @@
 # PlatformIO build output
 .pio/
 
-# VS Code C/C++ index + settings
+# VS Code / editor files
 .vscode/
+.idea/
+
+# macOS junk
+.DS_Store

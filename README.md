@@ -1,2 +1,2 @@
-# T-Deck-PitchComm
+# T-Deck-BLE-Relay
 Uh ohhhhhhhh!!! HACKMT

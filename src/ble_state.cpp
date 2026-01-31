@@ -1,34 +1,30 @@
+#include <Arduino.h>
 #include <BLEDevice.h>
 #include "ble_state.h"
 
-// Define shared state EXACTLY ONCE here
+// these are shared flags used by main
+// they live here so they are defined exactly once
+// the header only declares them as extern
+
 bool deviceConnected = false;
 volatile bool messageReceived = false;
 
+// called automatically when a phone connects over BLE
 void ServerCallbacks::onConnect(BLEServer* /*pServer*/) {
   deviceConnected = true;
-  Serial.println("CONNECTED");
+  Serial.println("BLE connected");
 }
 
+// called automatically when the phone disconnects
 void ServerCallbacks::onDisconnect(BLEServer* /*pServer*/) {
   deviceConnected = false;
-  Serial.println("DISCONNECTED");
-
-  // Restart advertising so iOS can reconnect
-  BLEDevice::startAdvertising();
-  Serial.println("ADVERTISING RESTARTED");
+  Serial.println("BLE disconnected");
 }
 
-void SignalCallbacks::onWrite(BLECharacteristic* pCharacteristic) {
+// called whenever the phone writes to the signal characteristic
+void SignalCallbacks::onWrite(BLECharacteristic* /*pCharacteristic*/) {
+  // we do not care about payload content yet
+  // this flag is just a signal to main that something arrived
   messageReceived = true;
-
-  std::string value = pCharacteristic->getValue();
-
-  Serial.print("MESSAGE RECEIVED, bytes=");
-  Serial.println(value.length());
-
-  // iOS is sending ASCII bytes (String -> .ascii)
-  // Print it as text exactly as received.
-  Serial.print("TEXT: ");
-  Serial.println(value.c_str());
+  Serial.println("BLE message received");
 }

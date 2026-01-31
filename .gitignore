@@ -1,0 +1,5 @@
+# PlatformIO build output
+.pio/
+
+# VS Code C/C++ index + settings
+.vscode/
